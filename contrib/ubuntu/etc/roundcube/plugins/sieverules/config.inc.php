@@ -1,0 +1,178 @@
+<?php
+
+/**
+ * SieveRules configuration file
+ */
+
+// managesieve server address
+// The host can contain the following macros that will be expanded as follows:
+// %n - hostname ($_SERVER['SERVER_NAME'])
+// %t - hostname without the first part
+// %d - domain (http hostname $_SERVER['HTTP_HOST'] without the first part)
+// %s - domain name after the '@' from e-mail address provided at login screen
+// For example %n = mail.domain.tld, %t = domain.tld
+$config['sieverules_host'] = 'localhost';
+
+// managesieve server port
+$config['sieverules_port'] = 4190;
+
+// Log managesieve conversation to <log_dir>/sieverules or to syslog
+$config['sieverules_debug'] = false;
+
+// authentication method. Can be CRAM-MD5, DIGEST-MD5, PLAIN, LOGIN, EXTERNAL
+// or none. Optional, defaults to best method supported by server.
+$config['sieverules_auth_type'] = null;
+
+// optional managesieve authentication identifier to be used as authorization proxy,
+// authenticate as a different user but act on behalf of the logged in user,
+// works with PLAIN and DIGEST-MD5 auth.
+$config['sieverules_auth_cid'] = null;
+
+// optional managesieve authentication password to be used for sieverules_auth_cid
+$config['sieverules_auth_pw'] = null;
+
+// enable TLS for managesieve server connection
+$config['sieverules_usetls'] = FALSE;
+
+// Connection context options
+// See http://php.net/manual/en/context.ssl.php
+// The example below enables server certificate validation
+// $config['sieverules_conn_options'] = array(
+//   'ssl'         => array(
+//     'verify_peer'  => true,
+//     'verify_depth' => 3,
+//     'cafile'       => '/etc/openssl/certs/ca.crt',
+//   )
+// );
+$config['sieverules_conn_options'] = null;
+
+// folder delimiter - if your sieve system uses a different folder delimiter to
+// your IMAP server set it here, otherwise leave as null to use IMAP delimiter
+$config['sieverules_folder_delimiter'] = null;
+
+// Sieve RFC says that we should use UTF-8 encoding for mailbox names,
+// but some implementations do not covert UTF-8 to modified UTF-7.
+// set to null for default behaviour
+$config['sieverules_folder_encoding'] = null;
+
+// include the IMAP root in the folder path when creating the rules
+// set to false to never include the IMAP root in the folder path
+// set to null for default behaviour
+$config['sieverules_include_imap_root'] = null;
+
+// ruleset name
+$config['sieverules_ruleset_name'] = 'roundcube';
+
+// allow multiple actions
+$config['sieverules_multiple_actions'] = TRUE;
+
+// allowed actions
+$config['sieverules_allowed_actions'] = array(
+											'fileinto' => TRUE,
+											'vacation' => TRUE,
+											'reject' => TRUE,
+											'redirect' => TRUE,
+											'keep' => TRUE,
+											'discard' => TRUE,
+											'imapflags' => TRUE,
+											'notify' => TRUE,
+											'stop' => TRUE,
+											'editheaderadd' => TRUE,
+											'editheaderrem' => TRUE
+											);
+
+// headers listed as examples of "Other headers"
+$config['sieverules_other_headers'] = array(
+											'Bcc', 'Reply-To', 'List-Id', 'MailingList', 'Mailing-List',
+											'X-ML-Name', 'X-List', 'X-List-Name', 'X-Mailing-List',
+											'Resent-From', 'Resent-To', 'X-Mailer', 'X-MailingList',
+											'X-Spam-Status', 'X-Priority', 'Importance', 'X-MSMail-Priority',
+											'Precedence', 'Return-Path', 'Received', 'Auto-Submitted',
+											'X-Spam-Flag', 'X-Spam-Tests', 'Sender',
+											);
+
+// Predefined rules
+// each rule should be in it own array - examples provided in README
+// 'name' => name of the rule, displayed in the rule type select box
+// 'type' => one of: header, address, envelope, size
+// 'header' => name of the header to test
+// 'operator' => operator to use, for all possible values please see README
+// 'extra' => extra information needed for the rule in some cases
+// 'target' => value that the header is tested against
+$config['sieverules_predefined_rules'] = array();
+
+// Advanced editor
+// allows the user to edit the sieve file directly, without the restrictions of the normal UI
+// 0 - Disabled, option not shown in the UI
+// 1 - Enabled, option shown in the UI
+// 2 - Option shown in the UI and used by default
+$config['sieverules_adveditor'] = 0;
+
+// Allow users to use multiple rulesets
+$config['sieverules_multiplerules'] = FALSE;
+
+// Default (or global) sieve rule file
+$config['sieverules_default_file'] = '/etc/dovecot/sieve/default';
+
+// Auto load default sieve rule file if no rules exist and no import filters match
+$config['sieverules_auto_load_default'] = FALSE;
+
+// Example sieve rule file
+$config['sieverules_example_file'] = '/etc/dovecot/sieve/example';
+
+// By default the "header" command is used for email address based tests: from/to/cc/bcc
+// to use "address" command instead set this option to false
+$config['sieverules_address_rules'] = FALSE;
+
+// Force the :addresses line to always be added to new vacation rules
+// Some sieve setups require that the :address part of a vacation rule is always present for the message to be sent
+// Cyrus setups need this to option set to true
+$config['sieverules_force_vacto'] = FALSE;
+
+// Limit the selection of :addresses available to only those setup in as an identity
+// Setting this to false will give the user a textbox to enter in any address(es) they like, rather than a list of checkboxes
+$config['sieverules_limit_vacto'] = TRUE;
+
+// Allow users to set the :from option when creating new vacation rules, not all servers support this option
+// If your server supports the variables extension users also have an 'auto detect' option which will detect the address to which the message was sent
+// Else the user's default identity will be used as the default value
+$config['sieverules_show_vacfrom'] = FALSE;
+
+// Allow users to set the :handle option when creating new vacation rules, not all servers support this option
+$config['sieverules_show_vachandle'] = FALSE;
+
+// The rule file can be written as one IF/ELSIF statement or as a series of unrelated IF statements
+// TRUE - one IF/ELSIF statement
+// FALSE - a series of unrelated IF statements (default)
+$config['sieverules_use_elsif'] = FALSE;
+
+// Fileinto action options
+// 0 - List only subscribed folders
+// 1 - List subscribed and unsubscribed folders
+// 2 - List subscribed and unsubscribed folders and allow users to enter a folder name (for advanced users only, requires sieve mailbox extension)
+$config['sieverules_fileinto_options'] = 0;
+
+// Define the format of the :from option value for vacation and notify actions
+// 0 - Use only the email address - :from "user@example.com"
+// 1 - Use the name and email address, not all servers support this option - :from "First Last <user@example.com>"
+$config['sieverules_from_format'] = 0;
+
+// Display a shortcut on mail screen to create a rule based on the currently selected message(s)
+// 0 - No shortcut
+// 1 - Show icon on the mail toolbar
+// 2 - Show link in the more actions menu
+$config['sieverules_shortcut'] = 0;
+
+// Display option to add new criteria to an existing rule when creating a rule from the shortcut
+$config['sieverules_rule_setup'] = FALSE;
+
+// List of additional headers to use when creating a rule from the shortcut
+$config['sieverules_additional_headers'] = array('List-Id');
+
+// Show separate interface for setting auto reply message
+// Note: sieverules_multiplerules must be set to false and sieverules_use_elsif should be set to false
+$config['sieverules_autoreply_ui'] = FALSE;
+
+// For information on customising the rule file see "The structure of the rule file" in the README
+
+?>
